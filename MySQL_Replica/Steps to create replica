@@ -1,4 +1,6 @@
 * Create new file my-replica.ini which contains replica configuration.
+* Create mysql duplicate dbs using command which will be used by my-replica.ini
+[& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe" --initialize-insecure --datadir="C:\Users\Shivam\Desktop\System-Design\MYSQL_Replica\mysql-replica-data"] 
 * run in powershell [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe" --defaults-file="C:\Users\Shivam\Downloads\my-replica.ini.txt"]
 * after 2nd step run mysql in powershell [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -P 3307 -h 127.0.0.1]
 * run original mysql in ps [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -pPassword -P 3307 -h 127.0.0.1]
@@ -13,7 +15,7 @@ BY 'password';]
     SOURCE_PASSWORD='password',
     SOURCE_LOG_FILE='LAPTOP-7C31ONQG-bin.000004',
     SOURCE_LOG_POS=154,
-    GET_SOURCE_PUBLIC_KEY=3246;
+    GET_SOURCE_PUBLIC_KEY=1;
 
 -- Note: If your MySQL 8 build is older than version 8.0.23, use the legacy keywords:
 -- CHANGE MASTER TO MASTER_HOST='127.0.0.1', MASTER_PORT=3306, MASTER_USER='replica_user', MASTER_PASSWORD='password', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=154, GET_MASTER_PUBLIC_KEY=1;
