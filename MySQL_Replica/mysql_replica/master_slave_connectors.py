@@ -1,17 +1,10 @@
 import mysql.connector
 from fastapi import APIRouter
-
+from MySQL_Replica.utils import connect_to_database
 
 mysql_router = APIRouter(prefix="/read_replicas", tags=["MySQL Replication Connectors"])
 
-def connect_to_database(host, user, passwd, port):
-    db = mysql.connector.connect(
-    host = host,                # Localhost for local connection
-    user = user,
-    passwd = passwd,
-        port = port
-    )
-    return db
+
     
     
 @mysql_router.get("/connect_master")
