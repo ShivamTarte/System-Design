@@ -1,5 +1,13 @@
+from fastapi import FastAPI
+import uvicorn
+from master_slave_connectors import mysql_router
+
+
+app = FastAPI()
+app.include_router(mysql_router)
+
 def main():
-    print("Hello from mysql-services!")
+    uvicorn.run(app, host="127.0.0.1", port=8000)
 
 
 if __name__ == "__main__":
