@@ -2,4 +2,27 @@
 * run in powershell [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe" --defaults-file="C:\Users\Shivam\Downloads\my-replica.ini.txt"]
 * after 2nd step run mysql in powershell [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -P 3307 -h 127.0.0.1]
 * run original mysql in ps [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -pPassword -P 3307 -h 127.0.0.1]
-* Create user so that replica can use it as user to fetch data logs from 
+* Create user so that replica can use it as user to fetch data logs from source or master server [CREATE USER 'replica_user'@'127.0.0.1'
+IDENTIFIED WITH mysql_native_password
+BY 'password';]
+* Grant replica priveleges replica_user we created [FLUSH PRIVILEGES]
+* On replica server for connecting replica to master using user created in master for replica write [CHANGE REPLICATION SOURCE TO
+    SOURCE_HOST='127.0.0.1',
+    SOURCE_PORT=3306,
+    SOURCE_USER='replica_user',
+    SOURCE_PASSWORD='password',
+    SOURCE_LOG_FILE='LAPTOP-7C31ONQG-bin.000004',
+    SOURCE_LOG_POS=154,
+    GET_SOURCE_PUBLIC_KEY=3246;
+
+-- Note: If your MySQL 8 build is older than version 8.0.23, use the legacy keywords:
+-- CHANGE MASTER TO MASTER_HOST='127.0.0.1', MASTER_PORT=3306, MASTER_USER='replica_user', MASTER_PASSWORD='password', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=154, GET_MASTER_PUBLIC_KEY=1;
+]
+* Start Replica [START REPLICA;]
+* For verification status [SHOW REPLICA STATUS\G] verify that Replica_IO_Running: Yes
+          Replica_SQL_Running: Yes as shown
+* Sometimes issues happened such that SOURCE_LOG_FILE and SOURCE_LOG_POS in CHANGE REPLICATION SOURCE command is correct,update it with command [SHOW MASTER STATUS;]
+*Again after STOP REPLICA; run start replica
+* Now try it create one db in master you will able to see in slave. 
+* Its works in such that like kafka events operation happened in master db is fetched and executed in replica db, it is async process, so instead of data this events go for processing in replica that why needs to keep
+updated with pos no of logs before starting replica
