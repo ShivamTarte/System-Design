@@ -1,4 +1,6 @@
 * Create new file my-replica.ini which contains replica configuration.
+* Create mysql duplicate dbs using command which will be used by my-replica.ini
+[& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe" --initialize-insecure --datadir="C:\Users\Shivam\Desktop\System-Design\MYSQL_Replica\mysql-replica-data"] 
 * run in powershell [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe" --defaults-file="C:\Users\Shivam\Downloads\my-replica.ini.txt"]
 * after 2nd step run mysql in powershell [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -P 3307 -h 127.0.0.1]
 * run original mysql in ps [& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -pPassword -P 3307 -h 127.0.0.1]
