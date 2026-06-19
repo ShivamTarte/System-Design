@@ -1,15 +1,17 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-
+from dotenv import load_dotenv
 from MySQL_Replica.utils import connect_to_database
+import os
+load_dotenv()  # Load environment variables from .env file
 
 class Shard(BaseModel):
     name: str
     nickname: str = None
 
 mysql_router = APIRouter(prefix="/sharding", tags=["MySQL Sharding"])
-shard_db1 = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3306, database="shard1")
-shard_db2 = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3307, database="shard2")
+shard_db1 = connect_to_database(os.environ["MYSQL_HOST"], os.environ["MYSQL_USER"], os.environ["MYSQL_PASSWORD"], 3306, database="shard1")
+shard_db2 = connect_to_database(os.environ["MYSQL_REPLICA_HOST"], os.environ["MYSQL_USER"], os.environ["MYSQL_PASSWORD"], 3307, database="shard2")
     
 
 @mysql_router.post("/add_shard")

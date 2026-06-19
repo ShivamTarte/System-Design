@@ -1,13 +1,25 @@
-import mysql.connector
+import os
 from fastapi import APIRouter
 from MySQL_Replica.utils import connect_to_database
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env file
 
 mysql_router = APIRouter(prefix="/read_replicas", tags=["MySQL Replication Connectors"])
 
 
-master_db = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3306) 
-replica_db = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3307)
-    
+master_db = connect_to_database(
+    os.environ["MYSQL_HOST"],
+    os.environ["MYSQL_USER"],
+    os.environ["MYSQL_PASSWORD"],
+    3306
+)
+replica_db = connect_to_database(
+    os.environ["MYSQL_REPLICA_HOST"],
+    os.environ["MYSQL_USER"],
+    os.environ["MYSQL_PASSWORD"],
+    3307
+)
+
 @mysql_router.get("/connect_master")
 def connect_master():
     try:
