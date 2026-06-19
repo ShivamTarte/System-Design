@@ -28,8 +28,8 @@ def get_db():
         os.environ["MYSQL_HOST"],
         os.environ["MYSQL_USER"],
         os.environ["MYSQL_PASSWORD"],
-        int(os.environ["MYSQL_PORT"]),
-        database=os.environ["MYSQL_DB","compare_redis"],
+        3306,
+        database="compare_redis",
     )
     try:
         yield db
@@ -45,7 +45,7 @@ def time_store_json(payload: JsonStructure, db=Depends(get_db)):
     start_time = time.time()
     cursor = None
     try:
-        query = "INSERT INTO compare_redis (name, age, email, job) VALUES (%s, %s, %s, %s)"
+        query = "INSERT INTO json_data (name, age, email, job) VALUES (%s, %s, %s, %s)"
         cursor = db.cursor()
         cursor.execute(query, (payload.name, payload.age, payload.email, payload.job))
         db.commit()
@@ -67,12 +67,12 @@ def time_retrieve_json(db=Depends(get_db)):
     cursor = None
     try:
         cursor = db.cursor()
-        cursor.execute("SELECT name, age, email, job FROM compare_redis")
+        cursor.execute("SELECT * FROM json_data")
         rows = cursor.fetchall()
-        result = [JsonStructure(name=r[0], age=r[1], email=r[2], job=r[3]) for r in rows]
         elapsed = time.time() - start_time
+        result = [JsonStructure(id=r[0], name=r[1], age=r[2], email=r[3], job=r[4]) for r in rows]
         if result:
-            return OutputData(message="All JSON data retrieved", elapsed_time=elapsed, json_data=result)
+            return OutputData(message="All JSON data retrieved", elapsed_time=elapsed)
         else:
             return OutputData(message="No data found", elapsed_time=elapsed, json_data=None)
     except Exception as e:
