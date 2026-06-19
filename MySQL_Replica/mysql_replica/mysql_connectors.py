@@ -69,8 +69,9 @@ def time_retrieve_json(db=Depends(get_db)):
         cursor = db.cursor()
         cursor.execute("SELECT * FROM json_data")
         rows = cursor.fetchall()
-        elapsed = time.time() - start_time
+        
         result = [JsonStructure(id=r[0], name=r[1], age=r[2], email=r[3], job=r[4]) for r in rows]
+        elapsed = time.time() - start_time
         if result:
             return OutputData(message="All JSON data retrieved", elapsed_time=elapsed)
         else:
