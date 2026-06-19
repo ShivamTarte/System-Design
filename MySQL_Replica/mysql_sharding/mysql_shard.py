@@ -8,12 +8,13 @@ class Shard(BaseModel):
     nickname: str = None
 
 mysql_router = APIRouter(prefix="/sharding", tags=["MySQL Sharding"])
+shard_db1 = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3306, database="shard1")
+shard_db2 = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3307, database="shard2")
+    
 
 @mysql_router.post("/add_shard")
 def add_shard(shard: Shard):
     # Connect to the specific database that holds the `shards` table
-    shard_db1 = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3306, database="shard1")
-    shard_db2 = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3307, database="shard2")
     
     try:
         if not shard.name or not shard.name.strip():

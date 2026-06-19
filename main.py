@@ -7,6 +7,7 @@ from MySQL_Replica.mysql_sharding.mysql_shard import mysql_router as shard_route
 app = FastAPI()
 app.include_router(mysql_router)
 app.include_router(shard_router)
+app.include_router(redis_router)
 
 def main():
     uvicorn.run(app, host="127.0.0.1", port=8000)

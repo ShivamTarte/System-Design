@@ -5,11 +5,11 @@ from MySQL_Replica.utils import connect_to_database
 mysql_router = APIRouter(prefix="/read_replicas", tags=["MySQL Replication Connectors"])
 
 
-    
+master_db = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3306) 
+replica_db = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3307)
     
 @mysql_router.get("/connect_master")
 def connect_master():
-    master_db = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3306)
     try:
         if master_db.is_connected():
             return {"message": "Successfully connected to the master database!"}
@@ -20,7 +20,6 @@ def connect_master():
         
 @mysql_router.get("/connect_replica")
 def connect_replica():
-    replica_db = connect_to_database("localhost", "api_user", "Arcsaber@0001", 3307)
     try:
         if replica_db.is_connected():
             return {"message": "Successfully connected to the replica database!"}
