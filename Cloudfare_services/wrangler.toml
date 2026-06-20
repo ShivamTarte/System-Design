@@ -3,6 +3,8 @@ type = "javascript"
 account_id = ""
 workers_dev = true
 
-[build]
-command = ""
-cwd = "./public"
+[env.production]
+routes = [
+  { pattern = "example.com", zone_name = "example.com" }
+]
+
