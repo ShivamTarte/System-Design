@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloudflare Image Upload & Cache Test</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cloudflare Image Upload & Cache Test</h1>
+            <p class="subtitle">Upload images and test Cloudflare caching behavior</p>
+        </header>
+
+        <div class="card">
+            <h2>📤 Upload Image</h2>
+            <p>Select an image to upload and store it via Cloudflare.</p>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="imageInput">Choose image:</label>
+                    <input type="file" id="imageInput" name="image" accept="image/*" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Upload Image</button>
+            </form>
+            <div id="uploadMessage" class="message"></div>
+        </div>
+
+        <div class="card">
+            <h2>📊 Cache Information</h2>
+            <div id="cacheInfo" class="cache-info">
+                <p><strong>CF-Cache-Status:</strong> <span id="cacheStatus">—</span></p>
+                <p><strong>CF-Ray:</strong> <span id="cfRay">—</span></p>
+                <p><strong>Last Request Time:</strong> <span id="requestTime">—</span></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🖼️ Uploaded Images</h2>
+            <div id="galleryContainer">
+                <div id="gallery" class="gallery">
+                    <p class="loading">Loading images...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card info-card">
+            <h3>ℹ️ How to Test Caching</h3>
+            <ol>
+                <li>Upload an image using the form above</li>
+                <li>Click on an image in the gallery to view it</li>
+                <li>Check the "Cache Information" section for CF-Cache-Status</li>
+                <li>Reload the page or click the image again</li>
+                <li>Look for "HIT" status, indicating the image was cached by Cloudflare</li>
+            </ol>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
