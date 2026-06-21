@@ -3,10 +3,6 @@ type = "javascript"
 account_id = ""
 workers_dev = true
 
-[[r2_buckets]]
-binding = "IMAGES"
-bucket_name = "system-design-images"
-
 [env.production]
 routes = [
   { pattern = "example.com", zone_name = "example.com" }
