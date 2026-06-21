@@ -33,7 +33,22 @@ async function handleUpload(event) {
             body: formData,
         });
 
-        const data = await response.json();
+        const text = await response.text();
+        const ct = response.headers.get('content-type') || '';
+        console.log('upload response:', response.status, ct, text.slice(0, 400));
+
+        let data;
+        if (ct.includes('application/json')) {
+            try {
+                data = JSON.parse(text);
+            } catch (err) {
+                showMessage('Invalid JSON response from server', 'error');
+                return;
+            }
+        } else {
+            showMessage('Unexpected response type from server (expected JSON).', 'error');
+            return;
+        }
 
         if (!response.ok) {
             showMessage(data.detail || 'Upload failed', 'error');
@@ -53,8 +68,21 @@ async function handleUpload(event) {
 async function loadImages() {
     try {
         const response = await fetch(`${API_BASE}/images`);
-        const data = await response.json();
-        
+        const text = await response.text();
+        const ct = response.headers.get('content-type') || '';
+        console.log('images response:', response.status, ct, text.slice(0,400));
+
+        let data;
+        if (ct.includes('application/json')) {
+            try {
+                data = JSON.parse(text);
+            } catch (err) {
+                throw new Error('Invalid JSON response when loading images');
+            }
+        } else {
+            throw new Error('Unexpected response type when loading images');
+        }
+
         updateCacheInfo(response);
 
         gallery.innerHTML = '';
