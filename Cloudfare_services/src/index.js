@@ -8,9 +8,9 @@ export default {
     // Get the response from the static files or API
     const response = await getAssetFromKV(request);
     
-    // Add cache headers for images
+    // Add cache headers for images - Cloudflare cache only, no browser cache
     if (url.pathname.includes('/static/uploads/')) {
-      response.headers.set('Cache-Control', 'public, max-age=3600');
+      response.headers.set('Cache-Control', 's-maxage=3600, max-age=0');
     }
     
     // Add CORS headers
