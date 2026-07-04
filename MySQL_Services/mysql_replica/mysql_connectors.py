@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from MySQL_Replica.utils import connect_to_database
+from MySQL_Services.utils import connect_to_database
 from pydantic import BaseModel
 import time
 import os
@@ -85,5 +85,27 @@ def time_retrieve_json(db=Depends(get_db)):
             except Exception:
                 pass
         
-
-    
+@mysql_connector.get("/retrieve_json/{name}", response_model=OutputData)
+def time_retrieve_json_by_name(name: str, db=Depends(get_db)):
+    start_time = time.time()
+    cursor = None
+    try:
+        cursor = db.cursor()
+        query = "SELECT * FROM json_data WHERE name = %s"
+        cursor.execute(query, ( name,))
+        rows = cursor.fetchall()
+        
+        result = [JsonStructure(id=r[0], name=r[1], age=r[2], email=r[3], job=r[4]) for r in rows]
+        elapsed = time.time() - start_time
+        if result:
+            return OutputData(message=f"JSON data retrieved for name: {os.name}", elapsed_time=elapsed, json_data=result)
+        else:
+            return OutputData(message=f"No data found for name: {os.name}", elapsed_time=elapsed, json_data=None)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if cursor:
+            try:
+                cursor.close()
+            except Exception:
+                pass
