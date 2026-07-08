@@ -1,7 +1,7 @@
 
 import redis.asyncio as redis
-import asyncio
 
+#Simulating the profile service working status with a global variable, in circuit breaker pattern, we can use Redis pub/sub to update the status of the profile service across multiple instances of the application inside database. This way, when the profile service is down, all instances of the application will be aware of it and can avoid making requests to the profile service until it is back up and running.
 profile_working = True
 PROFILE_WORKING_CHANNEL = "profile_working_channel"
 
