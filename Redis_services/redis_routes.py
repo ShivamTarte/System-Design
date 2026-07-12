@@ -95,7 +95,8 @@ async def publish_message(payload: RedisPubSubStructure):
 @redis_router.post("/unsubscribe", response_model=RedisPubSubResponse)
 async def unsubscribe(payload: RedisPubSubStructure):
     try:
-        channel_lst = await pubsub_connector.unsubscribe()
+        payload.channel = [payload.channel] if isinstance(payload.channel, str) else payload.channel
+        channel_lst = await pubsub_connector.unsubscribe(payload.channel)
         return RedisPubSubResponse(channel=channel_lst)
     except RedisError as exc:
         raise HTTPException(status_code=503, detail="Redis service unavailable") from exc
