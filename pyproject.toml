@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "boto3>=1.38.0",
     "dotenv>=0.9.9",
     "fastapi>=0.136.3",
     "kafka-python>=3.0.7",
