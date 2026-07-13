@@ -7,6 +7,7 @@ from MySQL_Services.mysql_replica import mysql_router
 from Redis_services.redis_routes import redis_router
 from Circuit_Breakers import utils
 from Circuit_Breakers.routes import circuit_breakers_router
+from Big_Data.big_data_routes import router as big_data_router
 
 
 app = FastAPI()
@@ -14,6 +15,7 @@ app.include_router(mysql_router)
 #app.include_router(shard_router)
 app.include_router(redis_router)
 app.include_router(circuit_breakers_router)
+app.include_router(big_data_router)
 
 
 if __name__ == "__main__":
